@@ -12,10 +12,10 @@ $config = [
             'showScriptName' => false,
             'enablePrettyUrl' => true,
             'rules' => [
-                '<controller:\w+>/<id:\d+>' => '<controller>/view',
+                '<controller>/<action>/<message:[a-zA-Z+]+>' => '<controller>/<action>',
                 '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
                 '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
-                '<controller:\w+>/<action:\w+>/<target>' => '<controller>/<action>'
+                '<controller:\w+>/<action:\w+>/<message:\d+>' => '<controller>/<action>'
             ],
         ],
         'request' => [
