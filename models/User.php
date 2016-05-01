@@ -3,6 +3,7 @@
 namespace app\models;
 
 use yii\db\ActiveRecord;
+use yii\behaviors\TimestampBehavior;
 
 class User extends ActiveRecord implements \yii\web\IdentityInterface
 {
@@ -11,6 +12,13 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
     public static function tableName()
     {
         return 'users';
+    }
+
+    public function behaviors()
+    {
+        return [
+         TimestampBehavior::className(),
+        ];
     }
 
     public function rules()
