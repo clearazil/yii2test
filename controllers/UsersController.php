@@ -74,12 +74,13 @@ class UsersController extends Controller
     {
         $request = Yii::$app->request;
 
-        $user = new User;
+        $user = new User(['scenario' => 'create']);
 
         $user->attributes = $request->post();
 
         if ($request->isPost && $user->validate()) {
             $user->password = Yii::$app->getSecurity()->generatePasswordHash($request->post('password'));
+            $user->password_repeat = $user->password;
             $user->auth_key = Yii::$app->getSecurity()->generateRandomString();
             $user->access_token = Yii::$app->getSecurity()->generateRandomString();
             $user->save();

@@ -6,6 +6,8 @@ use yii\db\ActiveRecord;
 
 class User extends ActiveRecord implements \yii\web\IdentityInterface
 {
+    public $password_repeat;
+
     public static function tableName()
     {
         return 'users';
@@ -15,7 +17,11 @@ class User extends ActiveRecord implements \yii\web\IdentityInterface
     {
         return [
             [['username', 'email'], 'required'],
+            [['password_repeat', 'password'], 'required', 'on' => 'create'],
             [['username', 'email'], 'string', 'max' => 50],
+            [['username', 'email'], 'unique'],
+            ['email', 'email'],
+            ['password', 'compare', 'compareAttribute' => 'password_repeat', 'on' => 'create']
         ];
     }
 

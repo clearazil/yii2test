@@ -16,6 +16,10 @@ use yii\helpers\Url;
         <input class="form-control" type="password" name="password" value="">
         <p class="text-danger"><?= $user->getFirstError('password') ?></p>
 
+        <label>Repeat password</label>
+        <input class="form-control" type="password" name="password_repeat" value="">
+        <p class="text-danger"><?= $user->getFirstError('password_repeat') ?></p>
+
         <label>Email</label>
         <input class="form-control" type="text" name="email" value="<?= $user->email ?>">
         <p class="text-danger"><?= $user->getFirstError('email') ?></p>
