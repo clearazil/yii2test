@@ -5,14 +5,17 @@ namespace app\controllers;
 use Yii;
 use yii\web\Controller;
 use app\models\User;
+use yii\web\NotFoundHttpException;
 
 class UsersController extends Controller
 {
     public function actionIndex()
     {
+        if(!Yii::$app->user->can('viewUsers')) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+
         $users = User::find()->all();
-
-
 
         return $this->render('index', [
             'users' => $users,
@@ -21,6 +24,10 @@ class UsersController extends Controller
 
     public function actionEdit($id)
     {
+        if(!Yii::$app->user->can('updateUser')) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+
         if(Yii::$app->session->hasFlash('user')) {
             $user = Yii::$app->session->getFlash('user');
         } else {
@@ -36,6 +43,10 @@ class UsersController extends Controller
 
     public function actionUpdate($id)
     {
+        if(!Yii::$app->user->can('updateUser')) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+
         $user = User::find()
             ->where(['id' => $id])
             ->one();
@@ -58,6 +69,10 @@ class UsersController extends Controller
 
     public function actionCreate()
     {
+        if(!Yii::$app->user->can('createUser')) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+
         if(Yii::$app->session->hasFlash('user')) {
             $user = Yii::$app->session->getFlash('user');
         } else {
@@ -72,6 +87,10 @@ class UsersController extends Controller
 
     public function actionStore()
     {
+        if(!Yii::$app->user->can('createUser')) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+
         $request = Yii::$app->request;
 
         $user = new User(['scenario' => 'create']);
@@ -84,6 +103,10 @@ class UsersController extends Controller
             $user->auth_key = Yii::$app->getSecurity()->generateRandomString();
             $user->access_token = Yii::$app->getSecurity()->generateRandomString();
             $user->save();
+
+            $auth = Yii::$app->authManager;
+            $userRole = $auth->getRole('user');
+            $auth->assign($authorRole, $user->getId());
 
             return $this->redirect('/users/index');
         } else {

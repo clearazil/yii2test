@@ -24,6 +24,9 @@ $config = [
                 '<controller:\w+>/<action:\w+>/<message:\d+>' => '<controller>/<action>'
             ],
         ],
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+        ],
         'request' => [
             'enableCookieValidation' => true,
             'enableCsrfValidation'  => true,
