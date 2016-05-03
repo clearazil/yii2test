@@ -106,7 +106,7 @@ class UsersController extends Controller
 
             $auth = Yii::$app->authManager;
             $userRole = $auth->getRole('user');
-            $auth->assign($authorRole, $user->getId());
+            $auth->assign($userRole, $user->getId());
 
             return $this->redirect('/users/index');
         } else {
