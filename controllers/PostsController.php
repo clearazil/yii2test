@@ -5,6 +5,7 @@ namespace app\controllers;
 use yii\web\Controller;
 use app\models\Post;
 use Yii;
+use yii\web\NotFoundHttpException;
 
 class PostsController extends Controller
 {
@@ -26,6 +27,10 @@ class PostsController extends Controller
                 ->where(['id' => $id])
                 ->one();    
         }
+
+        if(!Yii::$app->user->can('updatePost', ['post' => $post])) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
         
         return $this->render('edit', [
             'post' => $post,
@@ -34,9 +39,14 @@ class PostsController extends Controller
 
     public function actionUpdate($id)
     {
+
         $post = Post::find()
             ->where(['id' => $id])
             ->one();
+
+        if(!Yii::$app->user->can('updatePost', ['post' => $post])) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
 
         $request = Yii::$app->request;
 
@@ -55,6 +65,10 @@ class PostsController extends Controller
 
     public function actionCreate()
     {
+        if(!Yii::$app->user->can('createPost')) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+
         if(Yii::$app->session->hasFlash('post')) {
             $post = Yii::$app->session->getFlash('post');
         } else {
@@ -69,6 +83,10 @@ class PostsController extends Controller
 
     public function actionStore()
     {
+        if(!Yii::$app->user->can('createPost')) {
+            throw new NotFoundHttpException('The requested page does not exist.');
+        }
+
         $request = Yii::$app->request;
 
         $post = new Post;
